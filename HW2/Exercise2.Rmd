@@ -1,0 +1,168 @@
+---
+title: 'Everything Starts with Data Lab Exercise #2'
+author: "Johnny Chiu"
+date: "11/3/2017"
+output: html_document
+---
+```{r,echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(knitr)
+library(cvTools)
+```
+
+
+```{r}
+redwine <- read.table('_data/redwine.txt', header = TRUE)
+```
+
+# <font color='blue'>Problem 1</font>
+##### *Recall that RS and SD have missing values. Calculate the averages of RS and SD by ignoring the missing values.*
+
+### Answer
+
+The averages of RS and SD by ignoring the missing values are shown in the table below.
+
+```{r, results='asis'}
+rs_mean = mean(redwine$RS, na.rm=TRUE)
+sd_mean = mean(redwine$SD, na.rm=TRUE)
+
+table_1 <- data.frame(Feature=c('RS','SD'), 'mean ignoring NA'=c(rs_mean, sd_mean))
+kable(table_1)
+```
+
+
+
+# <font color='blue'>Problem 2</font>
+##### *After correlation analysis, Mr. Klabjan observed that there exists a significant correlation between SD and FS. Create vectors of SD.obs and FS.obs by omitting observations with missing values in SD. Build (simple) linear regression model to estimate SD.obs using FS.obs. That is, SD.obs is used as response variable and FS.obs is used as explanatory variable for the regression analysis. Print out the coefficients of the regression model.*
+*Hint: If you save the output from lm function to ABC, then the coefficients of the regression model can be obtained by coefficients(ABC).*
+
+### Answer
+
+The coefficients of the regression model are shown in the table below.
+
+```{r, results='asis'}
+df_2 = redwine %>% select(SD, FS) %>% filter(!is.na(SD))
+ 
+model_2 = lm(SD~FS, data=df_2)
+model_2_coefficients = summary(model_2)$coefficients[1:2]
+
+model_2_coefficients_df = data.frame(summary(model_2)$coefficients)
+
+kable(model_2_coefficients_df %>% select(Estimate))
+```
+
+
+
+
+
+# <font color='blue'>Problem 3</font>
+##### *Create a vector (of length 17) of estimated SD values using the regression model in Problem 2 and FS values of the observations with missing SD values. Impute missing values of SD using the created vector. Print out the average of SD after the imputation.*
+
+### Answer
+```{r}
+redwine_imputed = redwine
+
+df_3 = redwine_imputed %>% select(SD, FS) %>% filter(is.na(SD))
+
+missing_sd = is.na(redwine_imputed$SD)
+redwine_imputed$SD[missing_sd] =  predict(model_2,newdata=data.frame('FS'=df_3$FS)) 
+```
+
+The average of SD after the imputation is `r mean(redwine_imputed$SD)`.
+
+
+
+# <font color='blue'>Problem 4</font>
+##### *Mr. Klabjan decided RS is not significantly correlated to other attributes. Impute missing values of RS using the average value imputation method from the lab. Print out the average of RS after the imputation.*
+
+### Answer
+```{r}
+missing_rs = is.na(redwine_imputed$RS)
+redwine_imputed$RS[missing_rs] = mean(redwine_imputed$RS, na.rm = TRUE)
+```
+
+The average of SD after the imputation is `r mean(redwine_imputed$RS)`.
+
+
+
+# <font color='blue'>Problem 5</font>
+##### *We have imputed all missing values in the data set. Build multiple linear regression model for the new data set and save it as winemodel. Print out the coefficients of the regression model.*
+*Hint 1: built multiple linear regression by winemodel = $lm(redwine\$QA∼redwine\$FA+...+redwine\$AL)$*
+
+### Answer
+
+The coefficients of the regression model are shown in the table below.
+
+```{r}
+winemodel <- lm(QA~.,data=redwine_imputed)
+
+winemodel_coefficients_df = data.frame(summary(winemodel)$coefficients)
+kable(winemodel_coefficients_df %>% select(Estimate))
+```
+
+
+# <font color='blue'>Problem 6</font>
+##### *Print out the summary of the model. Pick one attribute that is least likely to be related to QA based on p-values.*
+
+### Answer
+
+According to the summary table below, the attribute that is least likely to be related to QA is *PH*, with the highest p-value of 0.414413.
+
+
+```{r}
+summary(winemodel)
+```
+
+
+
+
+# <font color='blue'>Problem 7</font>
+##### *Perform 5-fold cross validation for the model you just built. Print out the average error rate.*
+
+### Answer
+
+The average error rate  for *winemodel* performing 5-fold cross validation is shown as below, which is 0.6552711.
+
+```{r}
+cvFit(winemodel, data = redwine_imputed, y = redwine_imputed$QA, K = 5, seed = 1)
+```
+
+
+
+# <font color='blue'>Problem 8</font>
+##### *Mr. Klabjan is informed that the attribute picked in Problem 6 actually contains outliers. Calculate the average μ and standard deviation σ of the selected attribute. Create a new data set after removing observa- tions that is outside of the range [μ − 3σ, μ + 3σ] and name the data set as redwine2. Print out the dimension of redwine2 to know how many observations are removed.*
+
+### Answer
+```{r}
+ph.std = sd(redwine_imputed$PH,na.rm = TRUE)
+ph.mean = mean(redwine_imputed$PH,na.rm = TRUE)
+
+ph.ub = ph.mean + 3*ph.std
+ph.lb = ph.mean - 3*ph.std
+
+redwine2 <- redwine_imputed %>% filter(PH < ph.ub & PH > ph.lb) 
+
+dim(redwine2)
+```
+
+The dimension of redwine2 is `r dim(redwine2)[1]`. There are 19 observations being removed.
+
+
+
+# <font color='blue'>Problem 9</font>
+##### *Build regression model winemodel2 using the new data set from Problem 8 and print out the summary. Compare this model with the model obtained in Problem 6 and decide which one is better. Pick 5 attributes that is most likely to be related to QA based on p-values.*
+
+### Answer
+
+According to the overall Adjusted R-squared, winemodel2 is slightly better than winemodel.
+5 attributes that is most likely to be related to QA are *VA*,*CH*,*SD*,*SU*,and *AL*.
+
+```{r}
+winemodel2 <- lm(QA~.,data=redwine2)
+summary(winemodel2)
+```
+
+
+
+
+
