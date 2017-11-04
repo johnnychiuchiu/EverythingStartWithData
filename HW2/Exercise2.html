@@ -124,8 +124,8 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>redwine &lt;- read.table('_data/redwine.txt', header = TRUE)</code></pre>
-<div id="problem-1" class="section level1">
-<h1><font color="blue">Problem 1</font></h1>
+<div id="problem-1" class="section level2">
+<h2><font color="blue">Problem 1</font></h2>
 <div id="recall-that-rs-and-sd-have-missing-values.-calculate-the-averages-of-rs-and-sd-by-ignoring-the-missing-values." class="section level5">
 <h5><em>Recall that RS and SD have missing values. Calculate the averages of RS and SD by ignoring the missing values.</em></h5>
 </div>
@@ -157,8 +157,8 @@ kable(table_1)</code></pre>
 </table>
 </div>
 </div>
-<div id="problem-2" class="section level1">
-<h1><font color="blue">Problem 2</font></h1>
+<div id="problem-2" class="section level2">
+<h2><font color="blue">Problem 2</font></h2>
 <div id="after-correlation-analysis-mr.klabjan-observed-that-there-exists-a-significant-correlation-between-sd-and-fs.-create-vectors-of-sd.obs-and-fs.obs-by-omitting-observations-with-missing-values-in-sd.-build-simple-linear-regression-model-to-estimate-sd.obs-using-fs.obs.-that-is-sd.obs-is-used-as-response-variable-and-fs.obs-is-used-as-explanatory-variable-for-the-regression-analysis.-print-out-the-coefficients-of-the-regression-model." class="section level5">
 <h5><em>After correlation analysis, Mr. Klabjan observed that there exists a significant correlation between SD and FS. Create vectors of SD.obs and FS.obs by omitting observations with missing values in SD. Build (simple) linear regression model to estimate SD.obs using FS.obs. That is, SD.obs is used as response variable and FS.obs is used as explanatory variable for the regression analysis. Print out the coefficients of the regression model.</em></h5>
 <p><em>Hint: If you save the output from lm function to ABC, then the coefficients of the regression model can be obtained by coefficients(ABC).</em></p>
@@ -194,8 +194,8 @@ kable(model_2_coefficients_df %&gt;% select(Estimate))</code></pre>
 </table>
 </div>
 </div>
-<div id="problem-3" class="section level1">
-<h1><font color="blue">Problem 3</font></h1>
+<div id="problem-3" class="section level2">
+<h2><font color="blue">Problem 3</font></h2>
 <div id="create-a-vector-of-length-17-of-estimated-sd-values-using-the-regression-model-in-problem-2-and-fs-values-of-the-observations-with-missing-sd-values.-impute-missing-values-of-sd-using-the-created-vector.-print-out-the-average-of-sd-after-the-imputation." class="section level5">
 <h5><em>Create a vector (of length 17) of estimated SD values using the regression model in Problem 2 and FS values of the observations with missing SD values. Impute missing values of SD using the created vector. Print out the average of SD after the imputation.</em></h5>
 </div>
@@ -210,8 +210,8 @@ redwine_imputed$SD[missing_sd] =  predict(model_2,newdata=data.frame('FS'=df_3$F
 <p>The average of SD after the imputation is 46.3018197.</p>
 </div>
 </div>
-<div id="problem-4" class="section level1">
-<h1><font color="blue">Problem 4</font></h1>
+<div id="problem-4" class="section level2">
+<h2><font color="blue">Problem 4</font></h2>
 <div id="mr.klabjan-decided-rs-is-not-significantly-correlated-to-other-attributes.-impute-missing-values-of-rs-using-the-average-value-imputation-method-from-the-lab.-print-out-the-average-of-rs-after-the-imputation." class="section level5">
 <h5><em>Mr. Klabjan decided RS is not significantly correlated to other attributes. Impute missing values of RS using the average value imputation method from the lab. Print out the average of RS after the imputation.</em></h5>
 </div>
@@ -222,8 +222,8 @@ redwine_imputed$RS[missing_rs] = mean(redwine_imputed$RS, na.rm = TRUE)</code></
 <p>The average of SD after the imputation is 2.5379518.</p>
 </div>
 </div>
-<div id="problem-5" class="section level1">
-<h1><font color="blue">Problem 5</font></h1>
+<div id="problem-5" class="section level2">
+<h2><font color="blue">Problem 5</font></h2>
 <div id="we-have-imputed-all-missing-values-in-the-data-set.-build-multiple-linear-regression-model-for-the-new-data-set-and-save-it-as-winemodel.-print-out-the-coefficients-of-the-regression-model." class="section level5">
 <h5><em>We have imputed all missing values in the data set. Build multiple linear regression model for the new data set and save it as winemodel. Print out the coefficients of the regression model.</em></h5>
 <p><em>Hint 1: built multiple linear regression by winemodel = <span class="math inline">\(lm(redwine\$QA∼redwine\$FA+...+redwine\$AL)\)</span></em></p>
@@ -295,8 +295,8 @@ kable(winemodel_coefficients_df %&gt;% select(Estimate))</code></pre>
 </table>
 </div>
 </div>
-<div id="problem-6" class="section level1">
-<h1><font color="blue">Problem 6</font></h1>
+<div id="problem-6" class="section level2">
+<h2><font color="blue">Problem 6</font></h2>
 <div id="print-out-the-summary-of-the-model.-pick-one-attribute-that-is-least-likely-to-be-related-to-qa-based-on-p-values." class="section level5">
 <h5><em>Print out the summary of the model. Pick one attribute that is least likely to be related to QA based on p-values.</em></h5>
 </div>
@@ -334,8 +334,8 @@ kable(winemodel_coefficients_df %&gt;% select(Estimate))</code></pre>
 ## F-statistic:  80.6 on 11 and 1587 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-<div id="problem-7" class="section level1">
-<h1><font color="blue">Problem 7</font></h1>
+<div id="problem-7" class="section level2">
+<h2><font color="blue">Problem 7</font></h2>
 <div id="perform-5-fold-cross-validation-for-the-model-you-just-built.-print-out-the-average-error-rate." class="section level5">
 <h5><em>Perform 5-fold cross validation for the model you just built. Print out the average error rate.</em></h5>
 </div>
@@ -348,10 +348,10 @@ kable(winemodel_coefficients_df %&gt;% select(Estimate))</code></pre>
 ## 0.6552711</code></pre>
 </div>
 </div>
-<div id="problem-8" class="section level1">
-<h1><font color="blue">Problem 8</font></h1>
-<div id="mr.klabjan-is-informed-that-the-attribute-picked-in-problem-6-actually-contains-outliers.-calculate-the-average--and-standard-deviation--of-the-selected-attribute.-create-a-new-data-set-after-removing-observa--tions-that-is-outside-of-the-range--3--3-and-name-the-data-set-as-redwine2.-print-out-the-dimension-of-redwine2-to-know-how-many-observations-are-removed." class="section level5">
-<h5><em>Mr. Klabjan is informed that the attribute picked in Problem 6 actually contains outliers. Calculate the average μ and standard deviation σ of the selected attribute. Create a new data set after removing observa- tions that is outside of the range [μ − 3σ, μ + 3σ] and name the data set as redwine2. Print out the dimension of redwine2 to know how many observations are removed.</em></h5>
+<div id="problem-8" class="section level2">
+<h2><font color="blue">Problem 8</font></h2>
+<div id="mr.klabjan-is-informed-that-the-attribute-picked-in-problem-6-actually-contains-outliers.-calculate-the-average--and-standard-deviation--of-the-selected-attribute.-create-a-new-data-set-after-removing-observa--tions-that-is-outside-of-the-range-mean-3-std-mean-3-std-and-name-the-data-set-as-redwine2.-print-out-the-dimension-of-redwine2-to-know-how-many-observations-are-removed." class="section level5">
+<h5><em>Mr. Klabjan is informed that the attribute picked in Problem 6 actually contains outliers. Calculate the average μ and standard deviation σ of the selected attribute. Create a new data set after removing observa- tions that is outside of the range [mean − 3 std, mean + 3 std] and name the data set as redwine2. Print out the dimension of redwine2 to know how many observations are removed.</em></h5>
 </div>
 <div id="answer-7" class="section level3">
 <h3>Answer</h3>
@@ -368,8 +368,8 @@ dim(redwine2)</code></pre>
 <p>The dimension of redwine2 is 1580. There are 19 observations being removed.</p>
 </div>
 </div>
-<div id="problem-9" class="section level1">
-<h1><font color="blue">Problem 9</font></h1>
+<div id="problem-9" class="section level2">
+<h2><font color="blue">Problem 9</font></h2>
 <div id="build-regression-model-winemodel2-using-the-new-data-set-from-problem-8-and-print-out-the-summary.-compare-this-model-with-the-model-obtained-in-problem-6-and-decide-which-one-is-better.-pick-5-attributes-that-is-most-likely-to-be-related-to-qa-based-on-p-values." class="section level5">
 <h5><em>Build regression model winemodel2 using the new data set from Problem 8 and print out the summary. Compare this model with the model obtained in Problem 6 and decide which one is better. Pick 5 attributes that is most likely to be related to QA based on p-values.</em></h5>
 </div>
