@@ -11,6 +11,7 @@ output:
 library(dplyr)
 library(knitr)
 library(cvTools)
+library(DAAG)
 ```
 
 
@@ -124,10 +125,16 @@ summary(winemodel)
 
 ### Answer
 
-The average error rate  for *winemodel* performing 5-fold cross validation is shown as below, which is 0.6552711.
+The average error rate  for *winemodel* performing 5-fold cross validation is shown as below, which is 81.45508.
 
 ```{r}
-cvFit(winemodel, data = redwine_imputed, y = redwine_imputed$QA, K = 5, seed = 1)
+wine_cv <- CVlm(data=redwine_imputed, m=5, form.lm=formula(QA~.), seed=1, printit=F)
+attr(wine_cv, 'ms')
+```
+
+
+```{r, echo=FALSE}
+# cvFit(winemodel, data = redwine_imputed, y = redwine_imputed$QA, K = 5, seed = 1)
 ```
 
 
