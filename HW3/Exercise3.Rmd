@@ -1,8 +1,11 @@
 ---
-title: "Everything Starts with Data Lab Exercise #3"
+title: 'Everything Starts with Data Lab Exercise #3'
 author: "Johnny Chiu"
 date: "11/12/2017"
-output: html_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r,echo=FALSE, message=FALSE, warning=FALSE}
