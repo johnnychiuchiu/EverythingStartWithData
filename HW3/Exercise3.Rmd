@@ -53,12 +53,12 @@ The steady state probability of being in State 1 is `r Pi[1]`
 
 ### Answer 1(d)
 ```{r}
-B =P[2:size,2:size]
+B =P[1:size-1,1:size-1]
 Q = diag(size-1) - B
 e = c(rep(1, size-1))
 m = solve(Q) %*% e
 ```
-The mean first passage time from state 1 to state 100 is `r m[size-1]`
+The mean first passage time from state 1 to state 100 is `r m[1]`
 
 ## <font color='blue'>Problem 2</font>
 ![](_pic/problem2_1.png)
@@ -74,14 +74,14 @@ web = read.table('_data/webtraffic.txt', header=TRUE)
 ```{r}
 Traffic_list =  colSums(web)
 Traffic = as.matrix(data.frame(split(Traffic_list, 1:9)))
-Traffic[9,1] = 1000
 Traffic
 ```
 
 
 ### Answer 2(b)
 ```{r}
-P=Traffic/1000
+Traffic[9,1] = 1000
+P=Traffic/rowSums(Traffic)
 P
 ```
 
@@ -124,7 +124,7 @@ Traffic2[2,7] = Traffic[2,7] + Traffic[2,4]*0.2
 ```
 
 ```{r}
-P2 = Traffic2/1000
+P2 = Traffic2/rowSums(Traffic2)
 size2 = dim(P2)[1]
 Q2 = t(P2)-diag(size2)
 Q2[size2,] = rep(1,size2)
